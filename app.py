@@ -57,7 +57,7 @@ else:
             folium.LayerControl().add_to(m)
             
             # Exibir o mapa no Streamlit
-            st.subheader(f визуализация: {selected_file})
+            st.subheader(f"Visualização: {selected_file}")
             st_folium(m, width=1100, height=550)
             
             # Exibir tabela de dados correspondente
