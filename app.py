@@ -19,7 +19,7 @@ st.title("🌿 Mapeamento Geral de Áreas de Plantio (PRAD)")
 st.markdown("Acompanhamento integrado das frentes de Isoladas, Nucleação e Conservação Ambiental.")
 st.markdown("---")
 
-# 2. Carregamento de Dados Geográficos (Com suporte a pastas ou raiz)
+# 2. Carregamento de Dados Geográficos (Com classificação automática pelo nome)
 @st.cache_data
 def carregar_dados_prad():
     pastas_alvo = {
@@ -30,7 +30,7 @@ def carregar_dados_prad():
     
     gdfs = []
     
-    # Tenta carregar das pastas estruturadas
+    # Tenta carregar das pastas estruturadas (caso existam)
     for pasta, categoria in pastas_alvo.items():
         if os.path.exists(pasta):
             arquivos_shp = [os.path.join(pasta, f) for f in os.listdir(pasta) if f.lower().endswith(".shp")]
@@ -46,7 +46,7 @@ def carregar_dados_prad():
                 except Exception:
                     continue
                     
-    # Fallback inteligente: se não achou nas pastas, busca diretamente na raiz (.) do repositório
+    # Fallback inteligente na raiz: classifica automaticamente pelo nome do arquivo
     if not gdfs:
         arquivos_raiz = [f for f in os.listdir(".") if f.lower().endswith(".shp")]
         for arq in arquivos_raiz:
@@ -54,7 +54,18 @@ def carregar_dados_prad():
                 temp_gdf = gpd.read_file(arq)
                 temp_gdf.set_crs("EPSG:31982", allow_override=True, inplace=True)
                 temp_gdf = temp_gdf.to_crs(epsg=4326)
-                temp_gdf["Categoria"] = "Áreas de Plantio"
+                
+                arq_lower = arq.lower()
+                if "iso" in arq_lower:
+                    categoria = "Áreas Isoladas"
+                elif "nuc" in arq_lower:
+                    categoria = "Áreas de Nucleação"
+                elif "con" in arq_lower:
+                    categoria = "Área de Conservação"
+                else:
+                    categoria = "Áreas de Plantio"
+                    
+                temp_gdf["Categoria"] = categoria
                 nome_base = os.path.splitext(os.path.basename(arq))[0]
                 temp_gdf["Nome_Arquivo"] = nome_base
                 gdfs.append(temp_gdf)
