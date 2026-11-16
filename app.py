@@ -147,7 +147,7 @@ if not df_prad.empty:
     col1.metric("Área Total Mapeada", f"{df_prad['Área (ha)'].sum():.2f} hectares")
     col2.metric("Total de Áreas", f"{len(df_prad)} áreas")
     col3.metric("Frentes de Atuação", f"{df_prad['Categoria'].nunique()} categorias")
-    col4.metric("Base Geográfica", "Florianópolis / SC")
+    col4.metric("Base Geográfica", "Campus Florianópolis - TRINDADE")
 
     st.markdown("---")
 
