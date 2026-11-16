@@ -17,33 +17,33 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Cor de fundo da página principal */
-    .stApp {
-        background-color: #fffaf0; /* Altere para o código da cor que preferir */
-    }
-    
-    /* Cor de fundo da barra lateral (sidebar) - Opcional */
-    [data-testid="stSidebar"] {
-        background-color: #ffebcd; /* Altere para a cor desejada */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-st.markdown(
-    """
-    <style>
-    /* Oculta completamente a barra superior padrão do Streamlit */
+    /* Oculta a barra superior padrão do Streamlit */
     header[data-testid="stHeader"] {
         visibility: hidden;
         display: none;
     }
-    
-    /* Se quiser apenas torná-la transparente em vez de sumir com ela, use isto em vez do display: none:
-    header[data-testid="stHeader"] {
-        background: transparent;
+
+    /* Cor de fundo da página principal (marrom bem claro / bege suave) */
+    .stApp {
+        background-color: #FDF5E6; /* Cor Old Lace / Bege claro */
     }
-    */
+    
+    /* Cor de fundo da barra lateral (sidebar) combinando */
+    [data-testid="stSidebar"] {
+        background-color: #F7EEDD; 
+    }
+
+    /* Cor dos botões / tags selecionadas do multiselect (Verde Oliva) */
+    [data-baseweb="tag"] {
+        background-color: #556B2F !important; /* Verde Oliva */
+        color: white !important;
+    }
+    
+    /* Cor do texto e ícone de fechar dentro das tags */
+    [data-baseweb="tag"] span, [data-baseweb="tag"] svg {
+        color: white !important;
+        fill: white !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
