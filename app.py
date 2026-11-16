@@ -242,45 +242,84 @@ if not df_prad.empty:
 # 7. Galeria de Fotos dos Plantios Vinculada aos Filtros
     st.markdown("---")
     st.markdown("### 📸 Registros Fotográficos dos Plantios Realizados")
-    st.markdown("Acompanhamento visual sincronizado com as categorias selecionadas no mapa.")
+    st.markdown(
+        "Acompanhamento visual sincronizado com as categorias selecionadas no"
+        " mapa."
+    )
+
+    # (Opcional) Dicionário para legendas totalmente personalizadas:
+    # Digite exatamente o nome do arquivo da foto e a legenda que deseja exibir
+    legendas_personalizadas = {
+        "isolada_01.jpg": "Plantio Isolado - Setor Norte (Campus Trindade)",
+        "conservacao_01.jpg": "Área de Conservação e Regeneração - Bosque",
+        "nucleacao_01.jpg": "Implantação de Núcleos de Adensamento Ecológico",
+        "con_amiguis_1.png": "Amiga capivara passeando."
+    }
 
     pasta_fotos = "fotos_prad"
     if os.path.exists(pasta_fotos):
-        todas_imagens = sorted([f for f in os.listdir(pasta_fotos) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
-        
-        # Filtra dinamicamente com base nas categorias selecionadas na barra lateral
-        imagens_filtradas = []
-        for img in todas_imagens:
-            img_lower = img.lower()
-            incluir = False
-            
-            if "Área de Conservação" in categorias_selecionadas and any(k in img_lower for k in ["con", "conserva"]):
-                incluir = True
-            if "Áreas Isoladas" in categorias_selecionadas and any(k in img_lower for k in ["iso", "isolada"]):
-                incluir = True
-            if "Áreas de Nucleação" in categorias_selecionadas and any(k in img_lower for k in ["nuc", "nuclea"]):
-                incluir = True
-                
-            if incluir:
-                imagens_filtradas.append(img)
-                
-        # Se nenhuma imagem tiver prefixo específico, exibe todas para não ficar vazio
-        if not imagens_filtradas and todas_imagens:
-            imagens_filtradas = todas_imagens
+      todas_imagens = sorted([
+          f
+          for f in os.listdir(pasta_fotos)
+          if f.lower().endswith((".png", ".jpg", ".jpeg"))
+      ])
 
-        if imagens_filtradas:
-            cols = st.columns(min(3, len(imagens_filtradas)))
-            for i, img_nome in enumerate(imagens_filtradas):
-                caminho_img = os.path.join(pasta_fotos, img_nome)
-                with cols[i % len(cols)]:
-                    st.image(caminho_img, caption=f"Registro: {os.path.splitext(img_nome)[0]}", use_container_width=True)
-        else:
-            st.info("Nenhuma foto encontrada para as categorias selecionadas no momento.")
+      # Filtra dinamicamente com base nas categorias selecionadas na barra lateral
+      imagens_filtradas = []
+      for img in todas_imagens:
+        img_lower = img.lower()
+        incluir = False
+
+        if "Área de Conservação" in categorias_selecionadas and any(
+            k in img_lower for k in ["con", "conserva"]
+        ):
+          incluir = True
+        if "Áreas Isoladas" in categorias_selecionadas and any(
+            k in img_lower for k in ["iso", "isolada"]
+        ):
+          incluir = True
+        if "Áreas de Nucleação" in categorias_selecionadas and any(
+            k in img_lower for k in ["nuc", "nuclea"]
+        ):
+          incluir = True
+
+        if incluir:
+          imagens_filtradas.append(img)
+
+      # Se nenhuma imagem tiver filtro específico, exibe todas para não ficar vazio
+      if not imagens_filtradas and todas_imagens:
+        imagens_filtradas = todas_imagens
+
+      if imagens_filtradas:
+        cols = st.columns(min(3, len(imagens_filtradas)))
+        for i, img_nome in enumerate(imagens_filtradas):
+          caminho_img = os.path.join(pasta_fotos, img_nome)
+
+          # Define a legenda: usa o dicionário se existir, ou limpa o nome do arquivo automaticamente
+          if img_nome in legendas_personalizadas:
+            legenda_texto = legendas_personalizadas[img_nome]
+          else:
+            # Transforma "isolada_trindade_01.jpg" em "Isolada Trindade 01"
+            legenda_texto = (
+                os.path.splitext(img_nome)[0].replace("_", " ").title()
+            )
+
+          with cols[i % len(cols)]:
+            st.image(
+                caminho_img,
+                caption=f"📍 {legenda_texto}",
+                use_container_width=True,
+            )
+      else:
+        st.info("Nenhuma foto encontrada para as categorias selecionadas.")
     else:
-        st.info("💡 **Dica:** Crie uma pasta chamada `fotos_prad` e nomeie as fotos com os termos (ex: `isolada_01.jpg`, `conservacao_01.jpg`) para filtrá-las automaticamente.")
+      st.info(
+          "💡 **Dica:** Crie uma pasta chamada `fotos_prad` e adicione as"
+          " imagens."
+      )
 
 else:
-    st.error("Não foram encontrados arquivos shapefile válidos na raiz ou nas pastas de plantio.")
+  st.error("Não foram encontrados arquivos shapefile válidos na raiz.")
     
 # 8. Rodapé Institucional
 st.markdown("---")
