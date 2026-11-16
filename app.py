@@ -13,47 +13,32 @@ st.set_page_config(
     page_icon="🌿",
     layout="wide"
 )
-# cor de fundo e barra lateral
+
+# Estilização visual (Fundo bege, sem barra superior)
 st.markdown(
     """
     <style>
-    /* Oculta a barra superior padrão do Streamlit */
     header[data-testid="stHeader"] {
         visibility: hidden;
         display: none;
     }
-
-    /* Cor de fundo da página principal (bege suave) */
     .stApp {
         background-color: #FDF5E6 !important;
     }
-    
-    /* Cor de fundo da barra lateral (sidebar) */
     [data-testid="stSidebar"] {
         background-color: #F7EEDD !important;
-    }
-
-    /* Força a cor verde oliva em todas as variantes de tags/pílulas do multiselect */
-    div[data-baseweb="tag"], span[data-baseweb="tag"], div.stMultiSelect [data-baseweb="tag"] {
-        background-color: #556B2F !important;
-        background: #556B2F !important;
-    }
-    
-    /* Garante que o texto e o ícone "X" fiquem brancos dentro das tags */
-    div[data-baseweb="tag"] *, span[data-baseweb="tag"] * {
-        color: #ffffff !important;
-        fill: #ffffff !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 # Título Nativo Bem Destacado
 st.title("🌿 Mapeamento Geral de Áreas de Plantio (PRAD)")
 st.markdown("Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.")
 st.markdown("---")
 
-# 2. Carregamento de Dados Geográficos (Com classificação automática pelo nome)
+# 2. Carregamento de Dados Geográficos (Com suporte a pastas ou raiz)
 @st.cache_data
 def carregar_dados_prad():
     pastas_alvo = {
@@ -233,7 +218,7 @@ if not df_prad.empty:
         else:
             st.warning("Nenhuma área selecionada para exibição no mapa.")
 
-   with col_info:
+    with col_info:
         st.subheader("Legenda de Intervenções")
         st.markdown("""
         <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #27ae60; background-color: #F2F4EE;">
@@ -278,7 +263,7 @@ else:
 st.markdown("---")
 st.markdown(
     "<p style='text-align: center; color: #666; font-size: 0.9rem;'>"
-    "<b>Departamento de Gestão Ambiental</b> • Compromisso com a Sustentabilidade."
+    "<b>Coordenação de Gestão Ambiental</b> • Compromisso com a Sustentabilidade."
     "</p>",
     unsafe_allow_html=True
 )
