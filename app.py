@@ -254,6 +254,26 @@ if not df_prad.empty:
         "conservacao_01.jpg": "Área de Conservação e Regeneração - Bosque",
         "nucleacao_01.jpg": "Implantação de Núcleos de Adensamento Ecológico",
         "con_amiguis_1.png": "Amiga capivara passeando."
+        “iso_01.png”: “Plantio isolado – foto 1”
+        “iso_02.png”: “Plantio isolado – foto 2”
+        “iso_03.png”: “Plantio isolado – foto 3”
+        “iso_regenerante_01.png”: “Regenerante em área de plantio isolado – foto 1”
+        “iso_regenerante_02.png”: “Regenerante em área de plantio isolado – foto 2”
+        “isolada_01.png”: “Plantio isolado – foto 4”
+        “isolada_02.png”: “Plantio isolado – foto 5”
+        “nuc_01.png”: “Plantio nucleação – foto 1”
+        “nuc_02.png”: “Plantio nucleação – foto 2”
+        “nuc_03.png”: “Plantio nucleação – foto 3”
+        “nuc_04.png”: “Plantio nucleação – foto 4”
+        “nuc_05.png”: “Plantio nucleação – foto 5”
+        “nuc_remocao_inv_01.png”: “Remoção de invasoras para plantio nucleação – foto 1”
+        “nuc_remocao_inv_02.png”: “Remoção de invasoras para plantio nucleação – foto 2”
+        “nuc_remocao_inv_03.png”: “Remoção de invasoras para plantio nucleação – foto 3”
+        “nuc_remocao_inv_04.png”: “Remoção de invasoras para plantio nucleação – foto 4”
+        “nuc_remocao_inv_05.png”: “Remoção de invasoras para plantio nucleação – foto 5”
+        “nuc_rev_solo_01.png”: “Revirando solo – plantio nucleação – foto 1”
+        “nuc_rev_solo_02.png”: “Revirando solo – plantio nucleação – foto 2”
+        "nuc_rev_solo_03.png": "Revirando solo – plantio nucleação – foto 3"
     }
 
     pasta_fotos = "fotos_prad"
