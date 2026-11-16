@@ -145,8 +145,7 @@ if not df_prad.empty:
    st.markdown("### 📊 Indicadores Globais do Programa")
     
     # Damos um pouco mais de largura (1.4) para a última coluna acomodar a frase inteira
-    col1, col2, col3, col4 = st.columns([1, 1, 1, 1.5])
-    
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1.4])
     col1.metric("Área Total Mapeada", f"{df_prad['Área (ha)'].sum():.2f} hectares")
     col2.metric("Total de Áreas", f"{len(df_prad)} áreas")
     col3.metric("Frentes de Atuação", f"{df_prad['Categoria'].nunique()} categorias")
