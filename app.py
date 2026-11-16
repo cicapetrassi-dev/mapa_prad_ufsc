@@ -246,7 +246,7 @@ if not df_prad.empty:
 
     pasta_fotos = "fotos_prad"
     if os.path.exists(pasta_fotos):
-        imagens_disponiveis = [f for f in os.listdir(pasta_fotos) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+        imagens_disponiveis = sorted([f for f in os.listdir(pasta_fotos) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
         
         if imagens_disponiveis:
             cols = st.columns(min(3, len(imagens_disponiveis)))
@@ -261,7 +261,7 @@ if not df_prad.empty:
 
 else:
     st.error("Não foram encontrados arquivos shapefile válidos na raiz ou nas pastas de plantio.")
-
+    
 # 8. Rodapé Institucional
 st.markdown("---")
 st.markdown(
