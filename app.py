@@ -141,15 +141,15 @@ def carregar_dados_prad():
 df_prad, geojson_data = carregar_dados_prad()
 
 if not df_prad.empty:
-    # 3. Painel de Métricas de Impacto (KPIs)
-   st.markdown("### 📊 Indicadores Globais do Programa")
-    
-    # Damos um pouco mais de largura (1.4) para a última coluna acomodar a frase inteira
+    # 3. Painel de Métricas de Impacto (KPIs) com largura ajustada para a última coluna
+    st.markdown("### 📊 Indicadores Globais do Programa")
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1.4])
+    
     col1.metric("Área Total Mapeada", f"{df_prad['Área (ha)'].sum():.2f} hectares")
     col2.metric("Total de Áreas", f"{len(df_prad)} áreas")
     col3.metric("Frentes de Atuação", f"{df_prad['Categoria'].nunique()} categorias")
-    col4.metric("Base Geográfica", "Campus Florianópolis - TRINDADE")
+    col4.metric("Base Geográfica", "Campus Florianópolis - UFSC")
+
     st.markdown("---")
 
     # 4. Filtros na Barra Lateral
@@ -172,99 +172,4 @@ if not df_prad.empty:
             m = folium.Map(
                 location=[-27.5985, -48.5185], 
                 zoom_start=16, 
-                tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                attr='Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-            )
-
-            def estilo_feature(feature):
-                cat = feature['properties'].get('Categoria', '')
-                if cat == "Área de Conservação":
-                    cor_preenchimento = "#27ae60"  # Verde
-                elif cat == "Áreas Isoladas":
-                    cor_preenchimento = "#e67e22"  # Laranja
-                elif cat == "Áreas de Nucleação":
-                    cor_preenchimento = "#f1c40f"  # Amarelo
-                else:
-                    cor_preenchimento = "#3498db"  # Azul padrão
-                    
-                return {
-                    'fillColor': cor_preenchimento,
-                    'color': '#ffffff',
-                    'weight': 2,
-                    'fillOpacity': 0.75
-                }
-
-            ids_filtrados = set(df_filtrado["Identificação"])
-            features_filtradas = [
-                f for f in geojson_data["features"]
-                if f["properties"].get("Identificação") in ids_filtrados
-            ]
-            
-            geojson_filtrado = {
-                "type": "FeatureCollection",
-                "features": features_filtradas if features_filtradas else geojson_data["features"]
-            }
-
-            folium.GeoJson(
-                geojson_filtrado,
-                style_function=estilo_feature,
-                tooltip=folium.GeoJsonTooltip(
-                    fields=['Identificação', 'Categoria', 'Área (ha)'],
-                    aliases=['Identificação:', 'Categoria:', 'Área (ha):'],
-                    localize=True
-                )
-            ).add_to(m)
-
-            st_folium(m, width=None, height=480)
-        else:
-            st.warning("Nenhuma área selecionada para exibição no mapa.")
-
-    with col_info:
-        st.subheader("Legenda de Intervenções")
-        st.markdown("""
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #27ae60; background-color: #F2F4EE;">
-            <b>Áreas de conservação (Verde):</b> Áreas para cercamento e conservação, regeneração natural e proteção.
-        </div>
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #e67e22; background-color: #F2F4EE;">
-            <b>Áreas de plantio isolado (Laranja):</b> Perímetro cercado para o plantio isolado.
-        </div>
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #f1c40f; background-color: #F2F4EE;">
-            <b>Áreas de Nucleação (Amarelo):</b> Aplicação de técnicas de plantio em núcleos para adensamento ecológico.
-        </div>
-        """, unsafe_allow_html=True)
-
-    # 6. Tabela Detalhada de Atributos
-    with st.expander("📋 Ver Tabela Detalhada de Atributos"):
-        st.dataframe(df_filtrado, use_container_width=True)
-
-    # 7. Galeria de Fotos dos Plantios Realizados
-    st.markdown("---")
-    st.markdown("### 📸 Registros Fotográficos dos Plantios Realizados")
-    st.markdown("Acompanhamento visual do desenvolvimento e execução das frentes de restauração ecológica.")
-
-    pasta_fotos = "fotos_prad"
-    if os.path.exists(pasta_fotos):
-        imagens_disponiveis = [f for f in os.listdir(pasta_fotos) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-        
-        if imagens_disponiveis:
-            cols = st.columns(min(3, len(imagens_disponiveis)))
-            for i, img_nome in enumerate(imagens_disponiveis):
-                caminho_img = os.path.join(pasta_fotos, img_nome)
-                with cols[i % len(cols)]:
-                    st.image(caminho_img, caption=f"Registro: {os.path.splitext(img_nome)[0]}", use_container_width=True)
-        else:
-            st.info(f"A pasta '{pasta_fotos}' existe, mas não contém imagens suportadas (.jpg, .png).")
-    else:
-        st.info("💡 **Dica:** Crie uma pasta chamada `fotos_prad` no diretório do seu projeto e adicione imagens dos plantios para exibi-las automaticamente aqui.")
-
-else:
-    st.error("Não foram encontrados arquivos shapefile válidos na raiz ou nas pastas de plantio.")
-
-# 8. Rodapé Institucional
-st.markdown("---")
-st.markdown(
-    "<p style='text-align: center; color: #666; font-size: 0.9rem;'>"
-    "<b>Coordenação de Gestão Ambiental</b> • Compromisso com a Sustentabilidade."
-    "</p>",
-    unsafe_allow_html=True
-)
+                tiles='
