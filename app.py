@@ -23,26 +23,26 @@ st.markdown(
         display: none;
     }
 
-    /* Cor de fundo da página principal (marrom bem claro / bege suave) */
+    /* Cor de fundo da página principal (bege suave) */
     .stApp {
-        background-color: #FDF5E6; /* Cor Old Lace / Bege claro */
+        background-color: #FDF5E6 !important;
     }
     
-    /* Cor de fundo da barra lateral (sidebar) combinando */
+    /* Cor de fundo da barra lateral (sidebar) */
     [data-testid="stSidebar"] {
-        background-color: #F7EEDD; 
+        background-color: #F7EEDD !important;
     }
 
-    /* Cor dos botões / tags selecionadas do multiselect (Verde Oliva) */
-    [data-baseweb="tag"] {
-        background-color: #556B2F !important; /* Verde Oliva */
-        color: white !important;
+    /* Força a cor verde oliva em todas as variantes de tags/pílulas do multiselect */
+    div[data-baseweb="tag"], span[data-baseweb="tag"], div.stMultiSelect [data-baseweb="tag"] {
+        background-color: #556B2F !important;
+        background: #556B2F !important;
     }
     
-    /* Cor do texto e ícone de fechar dentro das tags */
-    [data-baseweb="tag"] span, [data-baseweb="tag"] svg {
-        color: white !important;
-        fill: white !important;
+    /* Garante que o texto e o ícone "X" fiquem brancos dentro das tags */
+    div[data-baseweb="tag"] *, span[data-baseweb="tag"] * {
+        color: #ffffff !important;
+        fill: #ffffff !important;
     }
     </style>
     """,
