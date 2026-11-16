@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilização visual (Fundo bege, sem barra superior)
+# Estilização visual (Fundo verde-sálvia/floresta suave, sem barra superior)
 st.markdown(
     """
     <style>
@@ -23,19 +23,26 @@ st.markdown(
         display: none;
     }
     .stApp {
-        background-color: #FDF5E6 !important;
+        background-color: #EBF2EB !important;
     }
     [data-testid="stSidebar"] {
-        background-color: #F7EEDD !important;
+        background-color: #DFE8DF !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Título Nativo Bem Destacado
-st.title("🌿 Mapeamento Geral de Áreas de Plantio (PRAD)")
-st.markdown("Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.")
+# Título e Subtítulo Maiores com Estilo de Floresta
+st.markdown(
+    """
+    <div style="margin-bottom: 10px;">
+        <h1 style="color: #1F361F; font-size: 2.5rem; font-weight: 700; margin-bottom: 5px;">🌿 Mapeamento Geral de Áreas de Plantio (PRAD)</h1>
+        <p style="color: #334D33; font-size: 1.2rem; font-weight: 500; margin-top: 0;">Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 st.markdown("---")
 
 # 2. Carregamento de Dados Geográficos (Com suporte a pastas ou raiz)
@@ -217,13 +224,13 @@ if not df_prad.empty:
     with col_info:
         st.subheader("Legenda de Intervenções")
         st.markdown("""
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #27ae60; background-color: #F2F4EE;">
+        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #27ae60; background-color: #E2EBE2;">
             <b>Áreas de conservação (Verde):</b> Áreas para cercamento e conservação, regeneração natural e proteção.
         </div>
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #e67e22; background-color: #F2F4EE;">
+        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #e67e22; background-color: #E2EBE2;">
             <b>Áreas de plantio isolado (Laranja):</b> Perímetro cercado para o plantio isolado.
         </div>
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #f1c40f; background-color: #F2F4EE;">
+        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #f1c40f; background-color: #E2EBE2;">
             <b>Áreas de Nucleação (Amarelo):</b> Aplicação de técnicas de plantio em núcleos para adensamento ecológico.
         </div>
         """, unsafe_allow_html=True)
@@ -258,7 +265,7 @@ else:
 # 8. Rodapé Institucional
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: #666; font-size: 0.9rem;'>"
+    "<p style='text-align: center; color: #4A634A; font-size: 0.9rem;'>"
     "<b>Coordenação de Gestão Ambiental</b> • Compromisso com a Sustentabilidade."
     "</p>",
     unsafe_allow_html=True
