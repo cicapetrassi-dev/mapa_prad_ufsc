@@ -30,6 +30,24 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+st.markdown(
+    """
+    <style>
+    /* Oculta completamente a barra superior padrão do Streamlit */
+    header[data-testid="stHeader"] {
+        visibility: hidden;
+        display: none;
+    }
+    
+    /* Se quiser apenas torná-la transparente em vez de sumir com ela, use isto em vez do display: none:
+    header[data-testid="stHeader"] {
+        background: transparent;
+    }
+    */
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Título Nativo Bem Destacado
 st.title("🌿 Mapeamento Geral de Áreas de Plantio (PRAD)")
 st.markdown("Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.")
