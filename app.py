@@ -19,12 +19,12 @@ st.markdown(
     <style>
     /* Cor de fundo da página principal */
     .stApp {
-        background-color: #f8f8ff; /* Altere para o código da cor que preferir */
+        background-color: #fffaf0; /* Altere para o código da cor que preferir */
     }
     
     /* Cor de fundo da barra lateral (sidebar) - Opcional */
     [data-testid="stSidebar"] {
-        background-color: #f8f8ff; /* Altere para a cor desejada */
+        background-color: #ffebcd; /* Altere para a cor desejada */
     }
     </style>
     """,
