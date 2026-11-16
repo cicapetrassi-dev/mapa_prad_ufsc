@@ -266,7 +266,7 @@ else:
 st.markdown("---")
 st.markdown(
     "<p style='text-align: center; color: #4A634A; font-size: 0.9rem;'>"
-    "<b>Coordenação de Gestão Ambiental</b> • Compromisso com a Sustentabilidade."
+    "<b>Departamento de Gestão Ambiental</b> • Compromisso com a Sustentabilidade."
     "</p>",
     unsafe_allow_html=True
 )
