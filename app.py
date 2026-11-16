@@ -37,8 +37,8 @@ st.markdown(
 st.markdown(
     """
     <div style="margin-bottom: 10px;">
-        <h1 style="color: #1F361F; font-size: 2.5rem; font-weight: 700; margin-bottom: 5px;">🌿 Mapeamento Geral de Áreas de Plantio (PRAD)</h1>
-        <p style="color: #334D33; font-size: 1.2rem; font-weight: 500; margin-top: 0;">Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.</p>
+        <h1 style="color: #1F361F; font-size: 3.2rem; font-weight: 700; margin-bottom: 5px;">🌿 Mapeamento Geral de Áreas de Plantio (PRAD)</h1>
+        <p style="color: #334D33; font-size: 1.4rem; font-weight: 500; margin-top: 0;">Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.</p>
     </div>
     """,
     unsafe_allow_html=True
