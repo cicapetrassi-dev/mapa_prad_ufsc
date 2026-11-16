@@ -13,7 +13,23 @@ st.set_page_config(
     page_icon="🌿",
     layout="wide"
 )
-
+# cor de fundo e barra lateral
+st.markdown(
+    """
+    <style>
+    /* Cor de fundo da página principal */
+    .stApp {
+        background-color: #f8f8ff; /* Altere para o código da cor que preferir */
+    }
+    
+    /* Cor de fundo da barra lateral (sidebar) - Opcional */
+    [data-testid="stSidebar"] {
+        background-color: #f8f8ff; /* Altere para a cor desejada */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Título Nativo Bem Destacado
 st.title("🌿 Mapeamento Geral de Áreas de Plantio (PRAD)")
 st.markdown("Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.")
