@@ -142,13 +142,15 @@ df_prad, geojson_data = carregar_dados_prad()
 
 if not df_prad.empty:
     # 3. Painel de Métricas de Impacto (KPIs)
-    st.markdown("### 📊 Indicadores Globais do Programa")
-    col1, col2, col3, col4 = st.columns(4)
+   st.markdown("### 📊 Indicadores Globais do Programa")
+    
+    # Damos um pouco mais de largura (1.4) para a última coluna acomodar a frase inteira
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1.5])
+    
     col1.metric("Área Total Mapeada", f"{df_prad['Área (ha)'].sum():.2f} hectares")
     col2.metric("Total de Áreas", f"{len(df_prad)} áreas")
     col3.metric("Frentes de Atuação", f"{df_prad['Categoria'].nunique()} categorias")
     col4.metric("Base Geográfica", "Campus Florianópolis - TRINDADE")
-
     st.markdown("---")
 
     # 4. Filtros na Barra Lateral
