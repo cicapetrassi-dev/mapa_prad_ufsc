@@ -233,16 +233,16 @@ if not df_prad.empty:
         else:
             st.warning("Nenhuma área selecionada para exibição no mapa.")
 
-    with col_info:
+   with col_info:
         st.subheader("Legenda de Intervenções")
         st.markdown("""
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #27ae60; background-color: #f9f9f9;">
+        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #27ae60; background-color: #F2F4EE;">
             <b>Áreas de conservação (Verde):</b> Áreas para cercamento e conservação, regeneração natural e proteção.
         </div>
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #e67e22; background-color: #f9f9f9;">
+        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #e67e22; background-color: #F2F4EE;">
             <b>Áreas de plantio isolado (Laranja):</b> Perímetro cercado para o plantio isolado.
         </div>
-        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #f1c40f; background-color: #f9f9f9;">
+        <div style="padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid #f1c40f; background-color: #F2F4EE;">
             <b>Áreas de Nucleação (Amarelo):</b> Aplicação de técnicas de plantio em núcleos para adensamento ecológico.
         </div>
         """, unsafe_allow_html=True)
