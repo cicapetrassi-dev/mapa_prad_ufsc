@@ -16,7 +16,7 @@ st.set_page_config(
 
 # Título Nativo Bem Destacado
 st.title("🌿 Mapeamento Geral de Áreas de Plantio (PRAD)")
-st.markdown("Acompanhamento integrado das frentes de Isoladas, Nucleação e Conservação Ambiental.")
+st.markdown("Acompanhamento integrado das frentes de plantio nas modalidades Isoladas, Nucleação e Conservação Ambiental.")
 st.markdown("---")
 
 # 2. Carregamento de Dados Geográficos (Com classificação automática pelo nome)
