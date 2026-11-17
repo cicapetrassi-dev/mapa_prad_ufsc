@@ -11,7 +11,7 @@ import plotly.express as px
 # 1. Configuração da Página e Layout
 st.set_page_config(
     page_title="Monitoramento PRAD - Áreas de Plantio",
-    page_icon="🗺️",
+    page_icon="🍃",
     layout="wide"
 )
 
