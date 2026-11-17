@@ -6,11 +6,12 @@ import geopandas as gpd
 import json
 import folium
 from streamlit_folium import st_folium
+import plotly.express as px
 
 # 1. Configuração da Página e Layout
 st.set_page_config(
     page_title="Monitoramento PRAD - Áreas de Plantio",
-    page_icon="🌿",
+    page_icon="🗺️",
     layout="wide"
 )
 
@@ -56,7 +57,6 @@ def carregar_dados_prad():
     
     gdfs = []
     
-    # Tenta carregar das pastas estruturadas (caso existam)
     for pasta, categoria in pastas_alvo.items():
         if os.path.exists(pasta):
             arquivos_shp = [os.path.join(pasta, f) for f in os.listdir(pasta) if f.lower().endswith(".shp")]
@@ -72,7 +72,6 @@ def carregar_dados_prad():
                 except Exception:
                     continue
                     
-    # Fallback inteligente na raiz: classifica automaticamente pelo nome do arquivo
     if not gdfs:
         arquivos_raiz = [f for f in os.listdir(".") if f.lower().endswith(".shp")]
         for arq in arquivos_raiz:
@@ -148,7 +147,7 @@ def carregar_dados_prad():
 df_prad, geojson_data = carregar_dados_prad()
 
 if not df_prad.empty:
-    # 3. Painel de Métricas de Impacto (KPIs) com largura ajustada para a última coluna
+    # 3. Painel de Métricas de Impacto (KPIs)
     st.markdown("### 📊 Indicadores Globais do Programa")
     col1, col2, col3, col4 = st.columns([1, 1, 1, 1.4])
     
@@ -170,7 +169,7 @@ if not df_prad.empty:
 
     df_filtrado = df_prad[df_prad["Categoria"].isin(categorias_selecionadas)]
 
-    # 5. Layout Principal: Mapa com Satélite de Alta Resolução (Esri)
+    # 5. Layout Principal: Mapa com Satélite e Legenda
     col_mapa, col_info = st.columns([2, 1])
 
     with col_mapa:
@@ -181,13 +180,13 @@ if not df_prad.empty:
             def estilo_feature(feature):
                 cat = feature['properties'].get('Categoria', '')
                 if cat == "Área de Conservação":
-                    cor_preenchimento = "#27ae60"  # Verde
+                    cor_preenchimento = "#27ae60"
                 elif cat == "Áreas Isoladas":
-                    cor_preenchimento = "#e67e22"  # Laranja
+                    cor_preenchimento = "#e67e22"
                 elif cat == "Áreas de Nucleação":
-                    cor_preenchimento = "#f1c40f"  # Amarelo
+                    cor_preenchimento = "#f1c40f"
                 else:
-                    cor_preenchimento = "#3498db"  # Azul padrão
+                    cor_preenchimento = "#3498db"
                     
                 return {
                     'fillColor': cor_preenchimento,
@@ -235,20 +234,41 @@ if not df_prad.empty:
         </div>
         """, unsafe_allow_html=True)
 
-    # 6. Tabela Detalhada de Atributos
+    # 6. Novo Gráfico: Distribuição da Área por Categoria
+    st.markdown("---")
+    st.markdown("### 📈 Distribuição da Área por Categoria de Plantio")
+    if not df_filtrado.empty:
+        df_chart = df_filtrado.groupby("Categoria")["Área (ha)"].sum().reset_index()
+        fig_prad = px.bar(
+            df_chart,
+            x="Categoria",
+            y="Área (ha)",
+            color="Categoria",
+            color_discrete_map={
+                "Área de Conservação": "#27ae60",
+                "Áreas Isoladas": "#e67e22",
+                "Áreas de Nucleação": "#f1c40f"
+            },
+            text_auto=".2f"
+        )
+        fig_prad.update_layout(
+            xaxis_title="Categoria de Plantio",
+            yaxis_title="Área Total (hectares)",
+            showlegend=False,
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)"
+        )
+        st.plotly_chart(fig_prad, use_container_width=True)
+
+    # 7. Tabela Detalhada de Atributos
     with st.expander("📋 Ver Tabela Detalhada de Atributos"):
         st.dataframe(df_filtrado, use_container_width=True)
 
-# 7. Galeria de Fotos dos Plantios Vinculada aos Filtros
+    # 8. Galeria de Fotos dos Plantios Vinculada aos Filtros e Legendas
     st.markdown("---")
     st.markdown("### 📸 Registros Fotográficos dos Plantios Realizados")
-    st.markdown(
-        "Acompanhamento visual sincronizado com as categorias selecionadas no"
-        " mapa."
-    )
+    st.markdown("Acompanhamento visual sincronizado com as categorias selecionadas no mapa.")
 
-    # (Opcional) Dicionário para legendas totalmente personalizadas:
-   # Digite exatamente o nome do arquivo da foto e a legenda que deseja exibir
     legendas_personalizadas = {
         "isolada_01.jpg": "Plantio Isolado - Setor Norte (Campus Trindade)",
         "conservacao_01.jpg": "Área de Conservação e Regeneração - Bosque",
@@ -278,70 +298,47 @@ if not df_prad.empty:
 
     pasta_fotos = "fotos_prad"
     if os.path.exists(pasta_fotos):
-      todas_imagens = sorted([
-          f
-          for f in os.listdir(pasta_fotos)
-          if f.lower().endswith((".png", ".jpg", ".jpeg"))
-      ])
+        todas_imagens = sorted([f for f in os.listdir(pasta_fotos) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
+        
+        imagens_filtradas = []
+        for img in todas_imagens:
+            img_lower = img.lower()
+            incluir = False
+            
+            if "Área de Conservação" in categorias_selecionadas and any(k in img_lower for k in ["con", "conserva"]):
+                incluir = True
+            if "Áreas Isoladas" in categorias_selecionadas and any(k in img_lower for k in ["iso", "isolada"]):
+                incluir = True
+            if "Áreas de Nucleação" in categorias_selecionadas and any(k in img_lower for k in ["nuc", "nuclea"]):
+                incluir = True
+                
+            if incluir:
+                imagens_filtradas.append(img)
+                
+        if not imagens_filtradas and todas_imagens:
+            imagens_filtradas = todas_imagens
 
-      # Filtra dinamicamente com base nas categorias selecionadas na barra lateral
-      imagens_filtradas = []
-      for img in todas_imagens:
-        img_lower = img.lower()
-        incluir = False
+        if imagens_filtradas:
+            cols = st.columns(min(3, len(imagens_filtradas)))
+            for i, img_nome in enumerate(imagens_filtradas):
+                caminho_img = os.path.join(pasta_fotos, img_nome)
+                
+                if img_nome in legendas_personalizadas:
+                    legenda_texto = legendas_personalizadas[img_nome]
+                else:
+                    legenda_texto = os.path.splitext(img_nome)[0].replace("_", " ").title()
 
-        if "Área de Conservação" in categorias_selecionadas and any(
-            k in img_lower for k in ["con", "conserva"]
-        ):
-          incluir = True
-        if "Áreas Isoladas" in categorias_selecionadas and any(
-            k in img_lower for k in ["iso", "isolada"]
-        ):
-          incluir = True
-        if "Áreas de Nucleação" in categorias_selecionadas and any(
-            k in img_lower for k in ["nuc", "nuclea"]
-        ):
-          incluir = True
-
-        if incluir:
-          imagens_filtradas.append(img)
-
-      # Se nenhuma imagem tiver filtro específico, exibe todas para não ficar vazio
-      if not imagens_filtradas and todas_imagens:
-        imagens_filtradas = todas_imagens
-
-      if imagens_filtradas:
-        cols = st.columns(min(3, len(imagens_filtradas)))
-        for i, img_nome in enumerate(imagens_filtradas):
-          caminho_img = os.path.join(pasta_fotos, img_nome)
-
-          # Define a legenda: usa o dicionário se existir, ou limpa o nome do arquivo automaticamente
-          if img_nome in legendas_personalizadas:
-            legenda_texto = legendas_personalizadas[img_nome]
-          else:
-            # Transforma "isolada_trindade_01.jpg" em "Isolada Trindade 01"
-            legenda_texto = (
-                os.path.splitext(img_nome)[0].replace("_", " ").title()
-            )
-
-          with cols[i % len(cols)]:
-            st.image(
-                caminho_img,
-                caption=f"📍 {legenda_texto}",
-                use_container_width=True,
-            )
-      else:
-        st.info("Nenhuma foto encontrada para as categorias selecionadas.")
+                with cols[i % len(cols)]:
+                    st.image(caminho_img, caption=f"📍 {legenda_texto}", use_container_width=True)
+        else:
+            st.info("Nenhuma foto encontrada para as categorias selecionadas.")
     else:
-      st.info(
-          "💡 **Dica:** Crie uma pasta chamada `fotos_prad` e adicione as"
-          " imagens."
-      )
+        st.info("💡 **Dica:** Crie uma pasta chamada `fotos_prad` e adicione as imagens.")
 
 else:
-  st.error("Não foram encontrados arquivos shapefile válidos na raiz.")
-    
-# 8. Rodapé Institucional
+    st.error("Não foram encontrados arquivos shapefile válidos na raiz ou nas pastas de plantio.")
+
+# 9. Rodapé Institucional
 st.markdown("---")
 st.markdown(
     "<p style='text-align: center; color: #4A634A; font-size: 0.9rem;'>"
